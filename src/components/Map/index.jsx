@@ -255,7 +255,10 @@ function Map() {
           (franceBoundaries.ymax - franceBoundaries.ymin)) *
           (imageBoundaries.ymax - imageBoundaries.ymin);
 
-      convertedCoordinates.push([xPos, yPos]);
+      convertedCoordinates.push({
+        region: data.region,
+        coordinates: [xPos, yPos],
+      });
     }
     console.log(convertedCoordinates);
     return convertedCoordinates;
@@ -286,13 +289,18 @@ function Map() {
         "http://www.w3.org/2000/svg",
         "circle"
       );
-      circle.setAttribute("cx", convertedCoordinates[i][0]);
-      circle.setAttribute("cy", convertedCoordinates[i][1]);
+
+      circle.setAttribute("cx", convertedCoordinates[i].coordinates[0]);
+      circle.setAttribute("cy", convertedCoordinates[i].coordinates[1]);
       circle.setAttribute("r", 2); // Rayon du cercle (à ajuster selon vos besoins)
       circle.setAttribute("fill", "red"); // Couleur de remplissage (à ajuster selon vos besoins)
 
       // Ajoute le cercle à l'élément SVG existant
-      svgRef.current.appendChild(circle);
+      const targetGroup = document.getElementById(
+        convertedCoordinates[i].region
+      );
+      console.log(targetGroup);
+      targetGroup.appendChild(circle);
     }
   }, []);
 
